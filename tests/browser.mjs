@@ -11,8 +11,7 @@ const fixture = await readFile(path.join(root, 'tests/fixtures', fixtureName));
 const profile = await mkdtemp(path.join(tmpdir(), 'drive-loudness-test-'));
 const extension = path.join(profile, 'extension');
 await cp(path.join(root, 'dist'), extension, { recursive: true });
-// Playwrightはoffscreen Workerの通信をrouteで捕捉しないため、テスト用コピーだけに
-// fetchの置換を前置する。元の配布物や解析コードは変更しない。
+// offscreen Workerの通信はrouteで捕捉できないため、テスト用コピーのfetchを置換する。
 const transport = `
 globalThis.fetch = async (url, init) => {
   if (new URL(url).origin !== 'https://www.googleapis.com') throw new Error('Test blocks external network');
@@ -68,7 +67,6 @@ try {
     const result = await analyze(new RangeReader({ url, size }), value => progress.push(value));
     return { ...result, testProgress: progress };
   }, fixtureName);
-  // ffmpegはstderrに測定結果を出す。
   const ref = await new Promise((resolve, reject) => {
     import('node:child_process').then(({ execFile }) => execFile('ffmpeg', ['-hide_banner', '-i', path.join(root, 'tests/fixtures', fixtureName), '-af', 'ebur128', '-f', 'null', '-'], (_, stdout, stderr) => {
       const values = [...stderr.matchAll(/I:\s+(-?\d+(?:\.\d+)?) LUFS/g)];
@@ -90,7 +88,6 @@ try {
   await options.locator('#clear').click();
   await options.getByRole('status').filter({ hasText: '測定結果を削除しました。' }).waitFor();
 
-  // Google/OAuthだけを人工データに置換し、配布物の自動動作を確認する。
   const fileId = 'LocalTestVideo1234567890', nextId = 'LocalTestVideoChanged123456';
   let version = '1', metadataRequests = 0, batchMode = 'normal';
   const batchFolderId = 'BatchFolderRoot12345', batchChildId = 'BatchFolderChild12345';

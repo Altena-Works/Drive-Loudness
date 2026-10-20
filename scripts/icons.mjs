@@ -9,7 +9,7 @@ const browser = await chromium.launch({ channel: 'chromium', headless: true, chr
 try {
   const page = await browser.newPage();
   for (const size of [16, 24, 32, 48, 128]) {
-    // Canvasへ直接描画し、viewport変更時の部分的な再描画をPNGへ取り込まない。
+    // 出力サイズのCanvasへ描画し、ビューポートに依存せずPNG化する。
     const png = await page.evaluate(async ({ svg, size }) => {
       const url = URL.createObjectURL(new Blob([svg.replace('<svg ', `<svg width="${size}" height="${size}" `)], { type: 'image/svg+xml' }));
       try {

@@ -9,7 +9,6 @@ async function request(message) {
   return response;
 }
 function showError(error) { $('error').textContent = error.message; }
-// 補正値をファイルごとに初めて表示したときだけ、0dBから値へ動かす。
 function animate(fileId, db) {
   shown.add(fileId); chrome.storage.session.set({ animatedFiles: [...shown].slice(-50) }).catch(() => {});
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

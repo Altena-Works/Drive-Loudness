@@ -33,7 +33,7 @@ try {
   await page.waitForTimeout(250);
   const reduced = await read(); assert.ok(Math.abs(reduced.rms / baseline.rms - 0.5) < 0.03);
   assert.equal(await page.evaluate(() => window.firstGraph === window.fixtureAudio.audio.graph(window.fixtureAudio.video)), true);
-  // 安全上限+20dBまでは受け付け、それを超える倍率は拒否する。
+  // 増幅上限+20dBの境界を確認する。音割れ防止の検証ではない。
   assert.deepEqual(await page.evaluate(() => { const { audio, video } = window.fixtureAudio; audio.apply(video, 10, 1);
     try { audio.apply(video, 10.01, 1); return [true, false]; } catch { return [true, true]; } finally { audio.apply(video, 0.5, 1); } }), [true, true]);
   await page.evaluate(() => window.fixtureAudio.audio.bypass(window.fixtureAudio.video));
