@@ -1,4 +1,4 @@
-// 接続済みのmedia要素は再接続せず、停止時は同じ経路を等倍へ戻す。
+// 同じ動画要素への二重接続を避けるため、停止時も音声経路を再利用する。
 export class PlayerAudio {
   constructor() { this.nodes = new WeakMap(); }
   graph(video) {
@@ -17,7 +17,7 @@ export class PlayerAudio {
     return graph;
   }
   apply(video, gain, volume) {
-    // 上限はloudness.jsのMAX_BOOST_DB（+20dB）。このファイルは単体でも読み込むため値を直接持つ。
+    // 単体読み込みに対応するため、MAX_BOOST_DBと同じ上限を直接指定する。
     if (!Number.isFinite(gain) || gain < 0 || gain > 10 ** (20 / 20) ||
         !Number.isFinite(volume) || volume < 0 || volume > 1) throw new Error('補正値が不正です。');
     const graph = this.graph(video);

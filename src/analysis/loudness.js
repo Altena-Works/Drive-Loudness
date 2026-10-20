@@ -1,4 +1,4 @@
-// ITU-R BS.1770のK-weighting。対応範囲はmono/stereo、ブロックは400ms/100ms。
+// ITU-R BS.1770のK-weighting。mono/stereoを400msブロック、100ms刻みで測定する。
 function coefficients(rate) {
   let k = Math.tan(Math.PI * 1681.974450955533 / rate);
   const vh = 10 ** (3.999843853973347 / 20), vb = vh ** 0.4996667741545416;

@@ -91,7 +91,7 @@ import { visibleElement, visiblePlayers, playerFrame } from './view.js';
     state.view = view; state.phase = 'pending'; state.controlled = true;
     state.volume = state.node.volume; state.muted = state.node.muted; state.writtenMuted = true;
     state.requested = !state.node.paused;
-    // 応答promiseやWorker開始を待たず、ミュートする前に期限を設ける。
+    // 登録応答が返らなくても、ミュートと一時停止を解除できるようにする。
     state.claimDeadline = setTimeout(() => {
       if (current === state && state.phase === 'pending' && !state.registered)
         fail(state, '表示中の動画を確認できません。原音で再生できます。');
@@ -123,7 +123,7 @@ import { visibleElement, visiblePlayers, playerFrame } from './view.js';
       else childMessage(event.data);
     };
     port1.start();
-    // 子の準備完了後に親へ接続する。親から遷移中のWindowProxyへは送信しない。
+    // 親から遷移中のWindowへ送るとoriginが変わりうるため、子から接続する。
     window.parent.postMessage({ channel, type: 'CONNECT', id }, origin, [port2]);
   }
   function childMessage(message) {
