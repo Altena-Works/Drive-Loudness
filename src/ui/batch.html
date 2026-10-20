@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DriveLoudness 一括解析</title><link rel="stylesheet" href="styles.css"></head>
+<body class="batch">
+<header><div class="brand"><span class="mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 13v6M10 7v18M16 11v10M22 4v24M28 12v8"/></svg></span><div><h1>フォルダーを一括解析</h1><p>DriveLoudness</p></div></div></header>
+<main>
+  <form id="folder-form" class="batch-input">
+    <label for="folder">Google Driveのフォルダー</label>
+    <div class="folder-row"><input id="folder" type="text" placeholder="フォルダーURL または ID" required autocomplete="off" spellcheck="false" aria-describedby="folder-help"><button id="check" class="quiet" type="submit">対象を確認</button></div>
+    <p id="folder-help" class="small">サブフォルダーも含めて解析します。処理中はこのタブを開いておいてください。</p>
+  </form>
+  <p id="error" role="alert"></p>
+  <section id="run" hidden aria-labelledby="folder-name">
+    <div class="batch-heading"><h2 id="folder-name"></h2><span id="phase" class="badge"></span></div>
+    <p id="summary" class="batch-summary"></p>
+    <progress id="progress" max="1" value="0" aria-label="一括解析の進捗"></progress>
+    <dl class="batch-counts"><div><dt>新規解析</dt><dd id="analyzed">0</dd></div><div><dt>保存済み再利用</dt><dd id="cached">0</dd></div><div><dt>対象外</dt><dd id="skipped">0</dd></div><div><dt>失敗</dt><dd id="failed">0</dd></div></dl>
+    <div class="batch-current"><p id="current-name"></p><p id="current-progress" class="small"></p></div>
+    <p id="message" role="status"></p>
+    <p id="elapsed" class="small"></p>
+    <div class="button-row"><button id="start" class="primary">解析を開始</button><button id="cancel" class="quiet">中止</button></div>
+    <p id="evicted" class="small"></p>
+    <details id="results"><summary>ファイルごとの結果</summary><div class="results-scroll"><table><thead><tr><th scope="col">動画</th><th scope="col">状態</th><th scope="col">詳細</th></tr></thead><tbody id="items"></tbody></table></div></details>
+  </section>
+  <p id="intro" class="batch-intro">動画を開く前に、音量の解析をまとめて済ませます。保存済みの結果は再利用します。</p>
+</main>
+<script type="module" src="batch.js"></script>
+</body></html>

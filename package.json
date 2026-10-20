@@ -1,0 +1,17 @@
+{
+  "name": "drive-loudness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "test:loudness": "node tests/loudness-v2-browser.mjs",
+    "icons": "node scripts/icons.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "playwright": "^1.64.1"
+  }
+}

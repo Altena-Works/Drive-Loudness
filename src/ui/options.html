@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DriveLoudness 設定</title><link rel="stylesheet" href="styles.css"></head>
+<body class="options">
+<header>
+  <div class="brand">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 13v6M10 7v18M16 11v10M22 4v24M28 12v8"/></svg></span>
+    <div><h1>DriveLoudness 設定</h1><p>Google連携と保存データ</p></div>
+  </div>
+</header>
+<main>
+  <section aria-labelledby="account-heading">
+    <div class="section-heading"><h2 id="account-heading">Googleアカウント連携</h2><p>Driveの動画を読み取る</p></div>
+    <div class="section-content">
+      <p>Google Drive全体の読み取り権限を使用します。動画の情報と必要な音声区間だけを取得し、ファイルの作成・変更・削除は行いません。</p>
+      <p class="small">Googleのログイン・同意は、ご自身で操作してください。</p>
+      <p id="client-state" class="client-state"></p>
+      <div class="button-row"><button id="connect" class="primary">Googleに接続</button><button id="disconnect" class="quiet">接続情報を解除</button></div>
+      <p class="small">解除すると、この拡張が保持するトークンと測定結果を消去します。Google側のアプリ許可の撤回はGoogleアカウントの設定から行えます。</p>
+    </div>
+  </section>
+  <section aria-labelledby="cache-heading">
+    <div class="section-heading"><h2 id="cache-heading">測定結果</h2><p>このブラウザ内に保存</p></div>
+    <div class="section-content">
+      <p>測定結果はこのブラウザ内だけに保存します。動画本体や音声、認証トークンは保存しません。動画が更新されると再解析します。</p>
+      <p class="small">最大5000件・5MiBまで保存し、上限では古い結果から整理します。</p>
+      <div class="button-row"><button id="batch" class="primary">フォルダーを一括解析</button><button id="clear" class="quiet">測定結果を削除</button></div>
+    </div>
+  </section>
+  <section aria-labelledby="usage-heading">
+    <div class="section-heading"><h2 id="usage-heading">使い方</h2><p>動画を開くだけで自動補正</p></div>
+    <div class="section-content">
+      <ol>
+        <li>「Googleに接続」から読み取りを許可します。</li>
+        <li>DriveでMP4動画を開くと、自動で解析して補正を準備します。</li>
+        <li>Driveの再生ボタンで視聴します。適用した補正量だけを動画上に約3秒表示します。</li>
+        <li>補正の停止・再開は、拡張ボタンから操作できます。聞く音量は端末側で調整してください。</li>
+      </ol>
+      <p>動画を切り替えると、次の動画も同じ基準で自動補正します。</p>
+      <p class="small">冒頭と全体の3秒区間を最大16地点測定します。48秒以下では音声区間を連続して測定します。取得量64MiB・256要求・60秒の上限に達した場合は終了します。</p>
+      <p class="small">平均音量に加え、冒頭や大きい区間の短時間音量を考慮して固定補正します。短時間音量の許容差は目標から6 LUを初期値としています。推定精度・未測定部分・音割れは保証できません。</p>
+    </div>
+  </section>
+  <p id="status" role="status"></p><p id="error" role="alert"></p>
+</main>
+<script type="module" src="options.js"></script>
+</body></html>
